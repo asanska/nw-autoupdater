@@ -21,35 +21,40 @@ function getFilename( uri ){
  * @returns {Promise}
  */
 function request( uri ){
+    console.log('in request uri: ', uri);
   const driver = url.parse( uri ).protocol === "https:" ? https : http;
   return new Promise(( resolve, reject ) => {
    return driver.get( uri, ( res ) => {
       const statusCode = res.statusCode;
+      console.log('got res with statusCode: ', statusCode);
       let error = false;
-      
+
       // handle redirect
       if (statusCode > 300 && statusCode < 400 && res.headers.location) {
+          console.log('handle redirect');
         const redirectUri = res.headers.location;
         res.resume();
         return request(redirectUri)
           .then(
-            (res) => {resolve(res)}, 
+            (res) => {resolve(res)},
             (e) => {reject(e)}
           );
       }
-    
+
       if ( statusCode !== 200 ) {
         error = new Error( `Request Failed (${uri}).\n` +
                            `Status Code: ${statusCode}` );
       }
 
       if ( error ) {
+          console.log('is error? ');
         // consume response data to free up memory
         res.resume();
         return reject( error );
       }
       return resolve( res );
     }).on( "error", ( e ) => {
+        console.log('error in request GET: ', e);
       reject( new Error( `Cannot read (${uri}).\n${e.message}` ) );
     });
    });

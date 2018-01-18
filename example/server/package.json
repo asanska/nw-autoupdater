@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
-  "packages": {},
+  "packages": {
+    "win64": {
+      "url": "http://localhost:8080/releases/copa-win-x64.zip",
+      "size": 96379775
+    }
+  },
   "scripts": {
     "start": "node server.js",
     "update": "node update.js"

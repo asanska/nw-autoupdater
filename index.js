@@ -62,6 +62,7 @@ class AutoUpdater extends EventEmitter {
    */
   async readRemoteManifest(){
     try {
+        console.log('manifest: ', this.manifest);
       return await readJson( this.manifest.manifestUrl );
     } catch ( e ) {
       throw new Error( `Cannot read remote manifest from ${this.manifest.manifestUrl}` );
