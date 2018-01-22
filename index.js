@@ -110,6 +110,11 @@ class AutoUpdater extends EventEmitter {
    * @returns {Promise<string>}
    */
   async unpack( updateFile, { debounceTime } = { debounceTime: DEBOUNCE_TIME } ){
+      try {
+          remove( this.options.updateDir );
+      } catch ( e ) {
+          throw new Error( `Cannot clean update folder ${this.options.updateDir}` );
+      }
     const isZipRe = /\.zip$/i,
           isGzRe = /\.tar\.gz$/i,
           onProgress = ( installFiles, totalFiles ) => {
